@@ -9,9 +9,14 @@ import javax.persistence.Id;
 @Data
 @Entity
 public class Post {
-    private @Id @GeneratedValue Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
     private String title;
     private String body;
+
+    public Post() {
+    }
 
     public Post(String title, String body) {
         this.title = title;

@@ -2,10 +2,7 @@ package com.example.springbootblog.entities;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,7 +15,7 @@ public class Post {
     private String title;
     private String body;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     public Post() {
@@ -30,7 +27,7 @@ public class Post {
     }
 
     public void addComment(Comment comment) {
-        if(this.comments instanceof List) {
+        if (this.comments instanceof List) {
             this.comments.add(comment);
         } else {
             this.comments = Arrays.asList(comment);

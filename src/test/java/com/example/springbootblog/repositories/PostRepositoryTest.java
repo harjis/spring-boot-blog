@@ -32,15 +32,19 @@ public class PostRepositoryTest {
     }
 
     @Test
-    public void canAddComments(){
+    public void canAddComments() {
         Post post = new Post("Title", "Body");
         Comment comment = new Comment("Comment Body");
         post.addComment(comment);
 
         entityManager.persistAndFlush(post);
 
+        // I would have expected this to do a select from posts and comments to get all data
+        // but it only does a select from posts
         List<Post> posts = postRepository.findAll();
-        assertThat(posts.get(0)).isEqualTo(post);
-        System.out.println(posts);
+        Post foundPost = posts.get(0);
+        assertThat(posts.size()).isEqualTo(1);
+        assertThat(foundPost).isEqualTo(post);
+        assertThat(foundPost.getComments().get(0)).isEqualTo(comment);
     }
 }

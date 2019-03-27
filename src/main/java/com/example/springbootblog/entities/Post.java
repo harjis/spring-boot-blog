@@ -25,6 +25,7 @@ public class Post {
     @Setter
     private String body;
 
+    // Setter does here nothing because variable is final
     @Getter
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private final Set<Comment> comments = new HashSet<>();

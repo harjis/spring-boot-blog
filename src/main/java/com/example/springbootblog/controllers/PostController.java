@@ -19,7 +19,11 @@ public class PostController {
 
     @GetMapping("/posts")
     List<Post> index() {
-        return postRepository.findAll();
+        List<Post> posts = postRepository.findAll();
+        for (Post post : posts) {
+            post.addComments(post.getComments());
+        }
+        return posts;
     }
 
     @GetMapping("/posts/{id}")

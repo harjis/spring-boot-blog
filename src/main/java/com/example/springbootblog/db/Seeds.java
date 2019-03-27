@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
+import java.util.HashSet;
 
 @Configuration
 @Slf4j
@@ -18,8 +19,25 @@ public class Seeds {
     CommandLineRunner initDataBase(PostRepository postRepository) {
         return args -> {
 
-            log.info("Preloading " + postRepository.save(new Post("Title1", "Body2", Arrays.asList(new Comment("Comment title 1"), new Comment("Comment title 2")))));
-            log.info("Preloading " + postRepository.save(new Post("Title2", "Body2", Arrays.asList(new Comment("Comment title 3")))));
+            log.info("Preloading " + postRepository.save(
+                    new Post(
+                            "Title1",
+                            "Body2",
+                            new HashSet<>(Arrays.asList(
+                                    new Comment("Comment title 1"),
+                                    new Comment("Comment title 2")
+                            ))
+                    )
+            ));
+            log.info("Preloading " + postRepository.save(
+                    new Post(
+                            "Title2",
+                            "Body2",
+                            new HashSet<>(Arrays.asList(
+                                    new Comment("Comment title 3")
+                            ))
+                    )
+            ));
         };
     }
 }

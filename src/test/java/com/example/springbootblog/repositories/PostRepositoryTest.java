@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -46,7 +47,7 @@ public class PostRepositoryTest {
         Post foundPost = posts.get(0);
         assertThat(posts.size()).isEqualTo(1);
         assertThat(foundPost).isEqualTo(post);
-        assertThat(foundPost.getComments().get(0)).isEqualTo(comment);
+        assertThat(foundPost.getComments().size()).isEqualTo(1);
     }
 
     @Test
@@ -54,7 +55,10 @@ public class PostRepositoryTest {
         Post post = new Post(
                 "Title",
                 "Body",
-                Arrays.asList(new Comment("Comment Body 1"), new Comment("Comment Body 2"))
+                new HashSet<>(Arrays.asList(
+                        new Comment("Comment Body 1"),
+                        new Comment("Comment Body 2")
+                ))
         );
 
         entityManager.persistAndFlush(post);

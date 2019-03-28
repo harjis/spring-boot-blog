@@ -1,33 +1,28 @@
 package com.example.springbootblog.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
 
 import javax.persistence.*;
 
+@Data
 @Entity
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = "post")
+@ToString(exclude = "post")
 public class Comment {
-    @Getter
-    @Setter
     @Id
     @GeneratedValue
     private Long id;
 
-    @Getter
-    @Setter
     private String body;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
     public Comment(String body) {
         this.body = body;
-    }
-
-    public void setPost(Post post) {
-        this.post = post;
     }
 }

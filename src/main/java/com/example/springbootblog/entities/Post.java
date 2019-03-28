@@ -1,34 +1,29 @@
 package com.example.springbootblog.entities;
 
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Data
 @Entity
 @NoArgsConstructor
+
 public class Post {
-    @Getter
-    @Setter
     @Id
     @GeneratedValue
     private Long id;
 
-    @Getter
-    @Setter
     private String title;
 
-    @Getter
-    @Setter
     private String body;
 
-    // Setter does here nothing because variable is final
-    @Getter
+    @JsonManagedReference
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private final Set<Comment> comments = new HashSet<>();
+    private Set<Comment> comments;
 
     public Post(String title, String body) {
         this.title = title;
@@ -42,6 +37,9 @@ public class Post {
     }
 
     public void addComment(Comment comment) {
+        if (this.comments == null) {
+            this.comments = new HashSet<>();
+        }
         this.comments.add(comment);
         comment.setPost(this);
     }

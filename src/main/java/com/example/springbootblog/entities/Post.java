@@ -11,7 +11,6 @@ import java.util.Set;
 @Data
 @Entity
 @NoArgsConstructor
-
 public class Post {
     @Id
     @GeneratedValue
@@ -23,7 +22,7 @@ public class Post {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private Set<Comment> comments;
+    private final Set<Comment> comments = new HashSet<>();
 
     public Post(String title, String body) {
         this.title = title;
@@ -37,9 +36,6 @@ public class Post {
     }
 
     public void addComment(Comment comment) {
-        if (this.comments == null) {
-            this.comments = new HashSet<>();
-        }
         this.comments.add(comment);
         comment.setPost(this);
     }

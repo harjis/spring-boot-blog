@@ -3,12 +3,14 @@ package com.example.springbootblog.controllers;
 import com.example.springbootblog.entities.Post;
 import com.example.springbootblog.exceptions.EntityNotFound;
 import com.example.springbootblog.repositories.PostRepository;
+import com.example.springbootblog.views.posts.PostIndexView;
+import com.example.springbootblog.views.posts.PostShowView;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(path = "/posts")
@@ -20,16 +22,12 @@ public class PostController {
     }
 
     @GetMapping("")
-    List<Post> index() {
-        List<Post> posts = postRepository.findAll();
-        for (Post post : posts) {
-            post.addComments(post.getComments());
-        }
-        return posts;
+    Set<PostShowView> index() {
+        return new PostIndexView(postRepository.findAll()).getPostsShowViews();
     }
 
     @GetMapping("/{id}")
-    Post show(@PathVariable Long id) {
-        return postRepository.findById(id).orElseThrow(() -> new EntityNotFound(id));
+    PostShowView show(@PathVariable Long id) {
+        return new PostShowView(postRepository.findById(id).orElseThrow(() -> new EntityNotFound(id)));
     }
 }

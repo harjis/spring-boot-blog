@@ -30,4 +30,9 @@ public class PostController {
     PostShowView show(@PathVariable Long id) {
         return new PostShowView(postRepository.findById(id).orElseThrow(() -> new EntityNotFound(id)));
     }
+
+    @GetMapping("/without_comments/{id}")
+    Post showWithoutComments(@PathVariable Long id) {
+        return postRepository.findById(id).orElseThrow(() -> new EntityNotFound(id));
+    }
 }

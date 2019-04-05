@@ -16,10 +16,11 @@ public class AuthorService {
 
     public List<AuthorMostActiveView> getMostActiveAuthors() {
         return entityManager.createQuery(
-                "select new com.example.springbootblog.views.authors.AuthorMostActiveView(a.id, a.name, count(p)) " +
+                "select new com.example.springbootblog.views.authors.AuthorMostActiveView(a.id, a.name, count(p) as numberOfPosts) " +
                         "from Author a " +
-                        "join a.posts p " +
-                        "group by a.id, a.name"
+                        "left join a.posts p " +
+                        "group by a.id, a.name " +
+                        "order by numberOfPosts desc "
         ).getResultList();
     }
 }

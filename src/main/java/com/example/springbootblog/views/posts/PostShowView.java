@@ -1,5 +1,6 @@
 package com.example.springbootblog.views.posts;
 
+import com.example.springbootblog.entities.Author;
 import com.example.springbootblog.entities.Comment;
 import com.example.springbootblog.entities.Post;
 import lombok.Data;
@@ -15,6 +16,7 @@ public class PostShowView {
     private String title;
     private String body;
     private final Set<Comment> comments = new HashSet<>();
+    private Author author;
 
     public PostShowView(Post post) {
         this.id = post.getId();
@@ -23,5 +25,6 @@ public class PostShowView {
         // I don't get this. If you simply set this.comments they are not lazilly fetched
         // this.comments = post.getComments();
         this.comments.addAll(post.getComments());
+        this.author = post.getAuthor();
     }
 }

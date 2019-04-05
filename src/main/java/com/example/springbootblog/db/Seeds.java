@@ -35,20 +35,20 @@ public class Seeds {
                             author1
                     )
             ));
-//            log.info("Preloading " + postRepository.save(
-//                    new Post(
-//                            "Title2",
-//                            "Body2",
-//                            new HashSet<>(Arrays.asList(
-//                                    new Comment("Comment title 3")
-//                            )),
-//                            author1
-//                    )
-//            ));
-//
-//            log.info("Preloading " + postRepository.save(
-//                    new Post("Title3", "Body3", author2)
-//            ));
+            log.info("Preloading " + postRepository.save(
+                    new Post(
+                            "Title2",
+                            "Body2",
+                            new HashSet<>(Arrays.asList(
+                                    new Comment("Comment title 3")
+                            )),
+                            author1
+                    )
+            ));
+
+            log.info("Preloading " + postRepository.save(
+                    new Post("Title3", "Body3", author2)
+            ));
         };
     }
 }

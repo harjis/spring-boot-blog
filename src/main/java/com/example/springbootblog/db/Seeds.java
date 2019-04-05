@@ -38,6 +38,10 @@ public class Seeds {
                             ))
                     )
             ));
+
+            log.info("Preloading " + postRepository.save(
+                    new Post("Title3", "Body3")
+            ));
         };
     }
 }

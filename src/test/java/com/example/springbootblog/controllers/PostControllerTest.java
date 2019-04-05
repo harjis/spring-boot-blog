@@ -33,6 +33,6 @@ public class PostControllerTest {
     @Test
     public void shouldGetCorrectAmountOfPosts() {
         ResponseEntity<List> entity = this.restTemplate.getForEntity("http://localhost:" + port + "/posts", List.class);
-        assertThat(entity.getBody().size()).isEqualTo(2);
+        assertThat(entity.getBody().size()).isEqualTo(3);
     }
 }

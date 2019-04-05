@@ -24,15 +24,27 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private final Set<Comment> comments = new HashSet<>();
 
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name = "author_id", nullable = false)
+    private Author author;
+
     public Post(String title, String body) {
         this.title = title;
         this.body = body;
     }
 
-    public Post(String title, String body, Set<Comment> comments) {
+    public Post(String title, String body, Set<Comment> comments, Author author) {
         this.title = title;
         this.body = body;
         this.addComments(comments);
+        this.setAuthor(author);
+    }
+
+    public Post(String title, String body, Author author) {
+        this.title = title;
+        this.body = body;
+        this.setAuthor(author);
     }
 
     public void addComment(Comment comment) {
@@ -44,5 +56,10 @@ public class Post {
         for (Comment comment : comments) {
             this.addComment(comment);
         }
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+        author.addPost(this);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.springbootblog.entities;
+package com.example.springbootblog.app.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;

@@ -1,6 +1,6 @@
-package com.example.springbootblog.services.author;
+package com.example.springbootblog.app.services.author;
 
-import com.example.springbootblog.views.authors.AuthorMostActiveView;
+import com.example.springbootblog.app.views.authors.AuthorMostActiveView;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;

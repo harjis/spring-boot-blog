@@ -1,8 +1,8 @@
-package com.example.springbootblog.views.posts;
+package com.example.springbootblog.app.views.posts;
 
-import com.example.springbootblog.entities.Author;
-import com.example.springbootblog.entities.Comment;
-import com.example.springbootblog.entities.Post;
+import com.example.springbootblog.app.entities.Author;
+import com.example.springbootblog.app.entities.Comment;
+import com.example.springbootblog.app.entities.Post;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

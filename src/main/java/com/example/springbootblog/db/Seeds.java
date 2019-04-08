@@ -1,10 +1,10 @@
 package com.example.springbootblog.db;
 
-import com.example.springbootblog.entities.Author;
-import com.example.springbootblog.entities.Comment;
-import com.example.springbootblog.entities.Post;
-import com.example.springbootblog.repositories.AuthorRepository;
-import com.example.springbootblog.repositories.PostRepository;
+import com.example.springbootblog.app.entities.Author;
+import com.example.springbootblog.app.entities.Comment;
+import com.example.springbootblog.app.entities.Post;
+import com.example.springbootblog.app.repositories.AuthorRepository;
+import com.example.springbootblog.app.repositories.PostRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;

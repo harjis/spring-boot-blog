@@ -1,4 +1,4 @@
-package com.example.springbootblog.views.authors;
+package com.example.springbootblog.app.views.authors;
 
 import lombok.Data;
 

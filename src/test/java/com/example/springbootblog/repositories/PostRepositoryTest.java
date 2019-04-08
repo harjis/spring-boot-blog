@@ -2,8 +2,9 @@ package com.example.springbootblog.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.example.springbootblog.entities.Comment;
-import com.example.springbootblog.entities.Post;
+import com.example.springbootblog.app.entities.Comment;
+import com.example.springbootblog.app.entities.Post;
+import com.example.springbootblog.app.repositories.PostRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

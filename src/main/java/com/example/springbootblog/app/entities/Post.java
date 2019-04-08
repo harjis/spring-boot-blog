@@ -25,7 +25,7 @@ public class Post {
     private final Set<Comment> comments = new HashSet<>();
 
     @JsonManagedReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 

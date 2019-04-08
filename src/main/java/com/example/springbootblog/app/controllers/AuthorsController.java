@@ -14,11 +14,11 @@ import java.util.Set;
 
 @RestController
 @RequestMapping(path = "/authors")
-public class AuthorController {
+public class AuthorsController {
     private final AuthorRepository authorRepository;
     private final AuthorService authorService;
 
-    AuthorController(AuthorRepository authorRepository, AuthorService authorService) {
+    AuthorsController(AuthorRepository authorRepository, AuthorService authorService) {
         this.authorRepository = authorRepository;
         this.authorService = authorService;
     }

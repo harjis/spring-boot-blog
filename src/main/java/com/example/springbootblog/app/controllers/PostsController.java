@@ -26,8 +26,12 @@ public class PostsController {
     }
 
     @GetMapping("/{id}")
-    Post show(@PathVariable Long id) {
-        return postService.findById(id);
+    Post show(@PathVariable Long id, @RequestParam String fetchType) {
+        if (fetchType.equals("eager")){
+            return postService.findByIdEager(id);
+        } else {
+            return postService.findById(id);
+        }
     }
 
     @GetMapping("/{id}/comments")

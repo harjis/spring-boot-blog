@@ -2,6 +2,7 @@ package com.example.springbootblog.app.controllers;
 
 import com.example.springbootblog.app.entities.Comment;
 import com.example.springbootblog.app.entities.Post;
+import com.example.springbootblog.app.repositories.CommentRepository;
 import com.example.springbootblog.app.repositories.PostRepository;
 import com.example.springbootblog.app.services.post.PostService;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +15,12 @@ import java.util.Set;
 public class PostsController {
     private final PostRepository postRepository;
     private final PostService postService;
+    private final CommentRepository commentRepository;
 
-    PostsController(PostRepository postRepository, PostService postService) {
+    PostsController(PostRepository postRepository, PostService postService, CommentRepository commentRepository) {
         this.postRepository = postRepository;
         this.postService = postService;
+        this.commentRepository = commentRepository;
     }
 
     @GetMapping("")
@@ -27,7 +30,7 @@ public class PostsController {
 
     @GetMapping("/{id}")
     Post show(@PathVariable Long id, @RequestParam String fetchType) {
-        if (fetchType.equals("eager")){
+        if (fetchType.equals("eager")) {
             return postService.findByIdEager(id);
         } else {
             return postService.findById(id);
@@ -48,5 +51,11 @@ public class PostsController {
         post.addComment(comment);
 
         return postRepository.save(post);
+    }
+
+    @PostMapping("/{id}/invalid_comments")
+    Comment addInvalidComment(@PathVariable Long id) {
+        Comment comment = new Comment("Invalid Comment");
+        return commentRepository.save(comment);
     }
 }

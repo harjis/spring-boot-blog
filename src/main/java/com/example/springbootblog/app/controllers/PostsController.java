@@ -1,11 +1,9 @@
 package com.example.springbootblog.app.controllers;
 
 import com.example.springbootblog.app.entities.Comment;
-import com.example.springbootblog.app.exceptions.EntityNotFound;
 import com.example.springbootblog.app.entities.Post;
 import com.example.springbootblog.app.repositories.PostRepository;
-import com.example.springbootblog.app.views.posts.PostIndexView;
-import com.example.springbootblog.app.views.posts.PostShowView;
+import com.example.springbootblog.app.services.post.PostService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,9 +13,11 @@ import java.util.Set;
 @RequestMapping(path = "/posts")
 public class PostsController {
     private final PostRepository postRepository;
+    private final PostService postService;
 
-    PostsController(PostRepository postRepository) {
+    PostsController(PostRepository postRepository, PostService postService) {
         this.postRepository = postRepository;
+        this.postService = postService;
     }
 
     @GetMapping("")
@@ -27,17 +27,18 @@ public class PostsController {
 
     @GetMapping("/{id}")
     Post show(@PathVariable Long id) {
-        return postRepository.findById(id).orElseThrow(() -> new EntityNotFound(id));
+        return postService.findById(id);
     }
 
-    @GetMapping("/without_relationships/{id}")
-    Post showWithoutRelationShips(@PathVariable Long id) {
-        return postRepository.findById(id).orElseThrow(() -> new EntityNotFound(id));
+    @GetMapping("/{id}/comments")
+    Set<Comment> getComments(@PathVariable Long id) {
+        Post post = postService.findById(id);
+        return post.getComments();
     }
 
-    @PostMapping("/add_comment/{id}")
+    @PostMapping("/{id}/comments")
     Post addComment(@PathVariable Long id) {
-        Post post = postRepository.findById(id).orElseThrow(() -> new EntityNotFound(id));
+        Post post = postService.findById(id);
         int numberOfComments = post.getComments().size() + 1;
         Comment comment = new Comment("Comment " + numberOfComments);
         post.addComment(comment);

@@ -2,6 +2,7 @@ package com.example.springbootblog.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.example.springbootblog.app.entities.Author;
 import com.example.springbootblog.app.entities.Comment;
 import com.example.springbootblog.app.entities.Post;
 import com.example.springbootblog.app.repositories.PostRepository;
@@ -56,10 +57,11 @@ public class PostRepositoryTest {
         Post post = new Post(
                 "Title",
                 "Body",
-                new HashSet<>(Arrays.asList(
+                new HashSet<Comment>(Arrays.asList(
                         new Comment("Comment Body 1"),
                         new Comment("Comment Body 2")
-                ))
+                )),
+                new Author("Author")
         );
 
         entityManager.persistAndFlush(post);

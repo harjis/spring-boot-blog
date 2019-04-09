@@ -24,8 +24,12 @@ public class PostsController {
     }
 
     @GetMapping("")
-    List<Post> index() {
-        return postRepository.findAll();
+    List<Post> index(@RequestParam(required = false) String title, @RequestParam(required = false) String body) {
+        if (title instanceof String || body instanceof String) {
+            return postService.findByPostTitleAndCommentBody(title, body);
+        } else {
+            return postRepository.findAll();
+        }
     }
 
     @GetMapping("/{id}")

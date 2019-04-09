@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,23 +42,20 @@ public class PostService {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Post> criteria = builder.createQuery(Post.class);
         Root<Post> root = criteria.from(Post.class);
-        if (title instanceof String && !(body instanceof String)) {
+        List<Predicate> predicates = new ArrayList<>();
+        if (title instanceof String) {
             Predicate titleWhere = builder.like(root.get("title"), title + "%");
-
-            criteria.where(titleWhere);
-        } else if (body instanceof String && !(title instanceof String)) {
-            Join<Post, Comment> join = root.join("comments");
-            Predicate bodyWhere = builder.like(join.get("body"), body + "%");
-
-            criteria.where(bodyWhere);
-        } else if (body instanceof String && title instanceof String) {
-            Predicate titleWhere = builder.like(root.get("title"), title + "%");
-            Join<Post, Comment> join = root.join("comments");
-            Predicate bodyWhere = builder.like(join.get("body"), body + "%");
-
-            criteria.where(builder.and(titleWhere, bodyWhere));
+            predicates.add(titleWhere);
         }
 
+        if (body instanceof String) {
+            Join<Post, Comment> join = root.join("comments");
+            Predicate bodyWhere = builder.like(join.get("body"), body + "%");
+            predicates.add(bodyWhere);
+        }
+
+        // I don't get why I can't just give predicates here :<
+        criteria.where(predicates.toArray(new Predicate[predicates.size()]));
         criteria.select(root).distinct(true);
 
         return entityManager.createQuery(criteria).getResultList();

@@ -2,8 +2,8 @@ package com.example.springbootblog.app.controllers;
 
 import com.example.springbootblog.app.entities.Comment;
 import com.example.springbootblog.app.entities.Post;
-import com.example.springbootblog.app.repositories.CommentRepository;
 import com.example.springbootblog.app.repositories.PostRepository;
+import com.example.springbootblog.app.services.PostCommentInserter;
 import com.example.springbootblog.app.services.post.PostService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,12 +15,12 @@ import java.util.Set;
 public class PostsController {
     private final PostRepository postRepository;
     private final PostService postService;
-    private final CommentRepository commentRepository;
+    private final PostCommentInserter postCommentInserter;
 
-    PostsController(PostRepository postRepository, PostService postService, CommentRepository commentRepository) {
+    PostsController(PostRepository postRepository, PostService postService, PostCommentInserter postCommentInserter) {
         this.postRepository = postRepository;
         this.postService = postService;
-        this.commentRepository = commentRepository;
+        this.postCommentInserter = postCommentInserter;
     }
 
     @GetMapping("")
@@ -33,8 +33,8 @@ public class PostsController {
     }
 
     @GetMapping("/{id}")
-    Post show(@PathVariable Long id, @RequestParam String fetchType) {
-        if (fetchType.equals("eager")) {
+    Post show(@PathVariable Long id, @RequestParam(required = false) String fetchType) {
+        if (fetchType instanceof String && fetchType.equals("eager")) {
             return postService.findByIdEager(id);
         } else {
             return postService.findById(id);
@@ -49,17 +49,11 @@ public class PostsController {
 
     @PostMapping("/{id}/comments")
     Post addComment(@PathVariable Long id) {
-        Post post = postService.findById(id);
-        int numberOfComments = post.getComments().size() + 1;
-        Comment comment = new Comment("Comment " + numberOfComments);
-        post.addComment(comment);
-
-        return postRepository.save(post);
+        return postService.addComment(id);
     }
 
     @PostMapping("/{id}/invalid_comments")
-    Comment addInvalidComment(@PathVariable Long id) {
-        Comment comment = new Comment("Invalid Comment");
-        return commentRepository.save(comment);
+    void addInvalidComment(@PathVariable Long id) {
+        postCommentInserter.createInvalidData(id);
     }
 }

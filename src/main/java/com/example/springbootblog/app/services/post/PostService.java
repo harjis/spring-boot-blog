@@ -60,4 +60,13 @@ public class PostService {
 
         return entityManager.createQuery(criteria).getResultList();
     }
+
+    public Post addComment(Long id) {
+        Post post = findById(id);
+        int numberOfComments = post.getComments().size() + 1;
+        Comment comment = new Comment("Comment " + numberOfComments);
+        post.addComment(comment);
+
+        return postRepository.save(post);
+    }
 }

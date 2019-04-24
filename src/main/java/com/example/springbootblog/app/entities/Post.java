@@ -29,6 +29,7 @@ public class Post {
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 
+    @JsonManagedReference
     @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(name = "post_tag",
             joinColumns = @JoinColumn(name = "post_id"),

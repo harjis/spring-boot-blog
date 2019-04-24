@@ -32,6 +32,7 @@ public class PostService {
                         "from Post p " +
                         "join fetch p.comments c " +
                         "join fetch p.author a " +
+                        "join fetch p.tags t " +
                         "where p.id = :id", Post.class
         ).setParameter("id", id);
 

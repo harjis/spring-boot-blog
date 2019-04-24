@@ -1,5 +1,6 @@
 package com.example.springbootblog.app.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class Tag {
     @NaturalId
     private String tag;
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "tags")
     private Set<Post> posts = new HashSet<>();
 

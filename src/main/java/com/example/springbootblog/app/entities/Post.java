@@ -29,7 +29,7 @@ public class Post {
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(name = "post_tag",
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
@@ -49,7 +49,7 @@ public class Post {
         this.addTags(tags);
     }
 
-    public Post(String title, String body, Author author) {
+    public Post(String title, String body, Author author, Set<Tag> tags) {
         this.title = title;
         this.body = body;
         this.setAuthor(author);

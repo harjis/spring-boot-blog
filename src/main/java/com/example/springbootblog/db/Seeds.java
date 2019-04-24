@@ -21,7 +21,6 @@ import java.util.HashSet;
 public class Seeds {
 
     @Bean
-    @Transactional
     CommandLineRunner initDataBase(
             PostRepository postRepository,
             AuthorRepository authorRepository,
@@ -37,6 +36,8 @@ public class Seeds {
     void initAuthor1(PostRepository postRepository, AuthorRepository authorRepository, TagRepository tagRepository) {
         Tag tag = new Tag("Tag 1");
         Tag tag2 = new Tag("Tag 2");
+        tagRepository.save(tag);
+        tagRepository.save(tag2);
         Author author1 = new Author("Author 1");
         log.info("Preloading Author 1" + authorRepository.save(author1));
         log.info("Preloading " + postRepository.save(
@@ -63,17 +64,19 @@ public class Seeds {
                         )),
                         author1,
                         new HashSet<>(Arrays.asList(
-
+                                tag2
                         ))
                 )
         ));
     }
 
     void initAuthor2(PostRepository postRepository, AuthorRepository authorRepository, TagRepository tagRepository) {
+        // Ok I'm starting to feel the hibernate pain. I don't understand why I can't do this.
+        Tag tag = tagRepository.findTagByTag("Tag 1");
         Author author2 = new Author("Author 2");
         log.info("Preloading Author 1" + authorRepository.save(author2));
         log.info("Preloading " + postRepository.save(
-                new Post("Title3", "Body3", author2)
+                new Post("Title3", "Body3", author2, new HashSet<>(Arrays.asList(tag)))
         ));
     }
 

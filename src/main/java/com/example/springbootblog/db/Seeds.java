@@ -7,6 +7,7 @@ import com.example.springbootblog.app.entities.Tag;
 import com.example.springbootblog.app.repositories.AuthorRepository;
 import com.example.springbootblog.app.repositories.PostRepository;
 import com.example.springbootblog.app.repositories.TagRepository;
+import com.example.springbootblog.app.services.tag.TagService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -21,14 +22,16 @@ import java.util.HashSet;
 public class Seeds {
 
     @Bean
+    @Transactional
     CommandLineRunner initDataBase(
             PostRepository postRepository,
             AuthorRepository authorRepository,
-            TagRepository tagRepository
+            TagRepository tagRepository,
+            TagService tagService
     ) {
         return args -> {
             this.initAuthor1(postRepository, authorRepository, tagRepository);
-            this.initAuthor2(postRepository, authorRepository, tagRepository);
+            this.initAuthor2(postRepository, authorRepository, tagService);
             this.initAuthor3(postRepository, authorRepository);
         };
     }
@@ -70,9 +73,9 @@ public class Seeds {
         ));
     }
 
-    void initAuthor2(PostRepository postRepository, AuthorRepository authorRepository, TagRepository tagRepository) {
-        // Ok I'm starting to feel the hibernate pain. I don't understand why I can't do this.
-        Tag tag = tagRepository.findTagByTag("Tag 1");
+    void initAuthor2(PostRepository postRepository, AuthorRepository authorRepository, TagService tagService) {
+        // Ok I'm starting to feel the hibernate pain. I don't understand why I can't do: tagRepository.findTagByTag("Tag 1");
+        Tag tag = tagService.findByTag("Tag 1");
         Author author2 = new Author("Author 2");
         log.info("Preloading Author 1" + authorRepository.save(author2));
         log.info("Preloading " + postRepository.save(

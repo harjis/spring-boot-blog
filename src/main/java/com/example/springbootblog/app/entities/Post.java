@@ -29,22 +29,31 @@ public class Post {
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "post_tag",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private Set<Tag> tags = new HashSet<>();
+
     public Post(String title, String body) {
         this.title = title;
         this.body = body;
     }
 
-    public Post(String title, String body, Set<Comment> comments, Author author) {
+    public Post(String title, String body, Set<Comment> comments, Author author, Set<Tag> tags) {
         this.title = title;
         this.body = body;
         this.addComments(comments);
         this.setAuthor(author);
+        this.addTags(tags);
     }
 
     public Post(String title, String body, Author author) {
         this.title = title;
         this.body = body;
         this.setAuthor(author);
+        this.addTags(tags);
     }
 
     public void addComment(Comment comment) {
@@ -61,5 +70,21 @@ public class Post {
     public void setAuthor(Author author) {
         this.author = author;
         author.addPost(this);
+    }
+
+    public void addTag(Tag tag) {
+        tags.add(tag);
+        tag.getPosts().add(this);
+    }
+
+    public void removeTag(Tag tag) {
+        tags.remove(tag);
+        tag.getPosts().remove(this);
+    }
+
+    public void addTags(Set<Tag> tags) {
+        for (Tag tag : tags) {
+            this.addTag(tag);
+        }
     }
 }

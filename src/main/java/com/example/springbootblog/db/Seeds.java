@@ -3,13 +3,16 @@ package com.example.springbootblog.db;
 import com.example.springbootblog.app.entities.Author;
 import com.example.springbootblog.app.entities.Comment;
 import com.example.springbootblog.app.entities.Post;
+import com.example.springbootblog.app.entities.Tag;
 import com.example.springbootblog.app.repositories.AuthorRepository;
 import com.example.springbootblog.app.repositories.PostRepository;
+import com.example.springbootblog.app.repositories.TagRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -18,15 +21,22 @@ import java.util.HashSet;
 public class Seeds {
 
     @Bean
-    CommandLineRunner initDataBase(PostRepository postRepository, AuthorRepository authorRepository) {
+    @Transactional
+    CommandLineRunner initDataBase(
+            PostRepository postRepository,
+            AuthorRepository authorRepository,
+            TagRepository tagRepository
+    ) {
         return args -> {
-            this.initAuthor1(postRepository, authorRepository);
-            this.initAuthor2(postRepository, authorRepository);
+            this.initAuthor1(postRepository, authorRepository, tagRepository);
+            this.initAuthor2(postRepository, authorRepository, tagRepository);
             this.initAuthor3(postRepository, authorRepository);
         };
     }
 
-    void initAuthor1(PostRepository postRepository, AuthorRepository authorRepository) {
+    void initAuthor1(PostRepository postRepository, AuthorRepository authorRepository, TagRepository tagRepository) {
+        Tag tag = new Tag("Tag 1");
+        Tag tag2 = new Tag("Tag 2");
         Author author1 = new Author("Author 1");
         log.info("Preloading Author 1" + authorRepository.save(author1));
         log.info("Preloading " + postRepository.save(
@@ -37,7 +47,11 @@ public class Seeds {
                                 new Comment("Comment title 1"),
                                 new Comment("Comment title 2")
                         )),
-                        author1
+                        author1,
+                        new HashSet<>(Arrays.asList(
+                                tag,
+                                tag2
+                        ))
                 )
         ));
         log.info("Preloading " + postRepository.save(
@@ -47,12 +61,15 @@ public class Seeds {
                         new HashSet<>(Arrays.asList(
                                 new Comment("Comment title 3")
                         )),
-                        author1
+                        author1,
+                        new HashSet<>(Arrays.asList(
+
+                        ))
                 )
         ));
     }
 
-    void initAuthor2(PostRepository postRepository, AuthorRepository authorRepository) {
+    void initAuthor2(PostRepository postRepository, AuthorRepository authorRepository, TagRepository tagRepository) {
         Author author2 = new Author("Author 2");
         log.info("Preloading Author 1" + authorRepository.save(author2));
         log.info("Preloading " + postRepository.save(

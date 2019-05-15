@@ -23,7 +23,7 @@ public class Seeds {
 
     @Bean
     @Transactional
-    CommandLineRunner initDataBase(
+    public CommandLineRunner initDataBase(
             PostRepository postRepository,
             AuthorRepository authorRepository,
             TagRepository tagRepository,
@@ -75,6 +75,11 @@ public class Seeds {
 
     void initAuthor2(PostRepository postRepository, AuthorRepository authorRepository, TagService tagService) {
         // Ok I'm starting to feel the hibernate pain. I don't understand why I can't do: tagRepository.findTagByTag("Tag 1");
+        // Solved:
+        // 1. Another caveat of using proxies is that only public methods should be annotated with @Transactional. Methods of any other visibilities will simply ignore the annotation silently as these are not proxied. https://www.baeldung.com/transaction-configuration-with-jpa-and-spring
+        // 2. We return a function in initDataBase which has the code for populating the db. Because the function is
+        // executed at later time it is not in the transaction anymore. Dirty fix is to execute the code outside
+        // of returned function
         Tag tag = tagService.findByTag("Tag 1");
         Author author2 = new Author("Author 2");
         log.info("Preloading Author 1" + authorRepository.save(author2));

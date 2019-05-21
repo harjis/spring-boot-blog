@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 public class CommentService {
     private final CommentRepository commentRepository;
 
-    CommentService(CommentRepository commentRepository) {
+    public CommentService(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
     }
 
     public Comment addInvalidComment() {
-        Comment comment = new Comment("Invalid Comment");
+        Comment comment = new Comment("Invalid Comment because it is missing Post");
         return commentRepository.save(comment);
     }
 }

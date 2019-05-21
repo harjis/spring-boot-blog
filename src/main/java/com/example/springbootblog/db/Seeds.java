@@ -29,10 +29,10 @@ public class Seeds {
             TagRepository tagRepository,
             TagService tagService
     ) {
+        this.initAuthor1(postRepository, authorRepository, tagRepository);
+        this.initAuthor2(postRepository, authorRepository, tagService);
+        this.initAuthor3(postRepository, authorRepository);
         return args -> {
-            this.initAuthor1(postRepository, authorRepository, tagRepository);
-            this.initAuthor2(postRepository, authorRepository, tagService);
-            this.initAuthor3(postRepository, authorRepository);
         };
     }
 

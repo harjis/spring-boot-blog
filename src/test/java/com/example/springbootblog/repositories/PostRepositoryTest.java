@@ -28,7 +28,8 @@ public class PostRepositoryTest {
 
     @Test
     public void canSavePost() {
-        Post post = new Post("Title", "Body");
+        Author author = new Author("Author 1");
+        Post post = new Post("Title", "Body", author);
         entityManager.persistAndFlush(post);
 
         int postCount = postRepository.findAll().size();
@@ -37,7 +38,8 @@ public class PostRepositoryTest {
 
     @Test
     public void canAddComment() {
-        Post post = new Post("Title", "Body");
+        Author author = new Author("Author 1");
+        Post post = new Post("Title", "Body", author);
         Comment comment = new Comment("Comment Body");
         post.addComment(comment);
 

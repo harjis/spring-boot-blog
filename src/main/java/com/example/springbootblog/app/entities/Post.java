@@ -25,7 +25,7 @@ public class Post {
     private final Set<Comment> comments = new HashSet<>();
 
     @JsonManagedReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 
@@ -42,12 +42,25 @@ public class Post {
         this.body = body;
     }
 
+    public Post(String title, String body, Author author) {
+        this.title = title;
+        this.body = body;
+        this.setAuthor(author);
+    }
+
     public Post(String title, String body, Set<Comment> comments, Author author, Set<Tag> tags) {
         this.title = title;
         this.body = body;
         this.addComments(comments);
         this.setAuthor(author);
         this.addTags(tags);
+    }
+
+    public Post(String title, String body, Set<Comment> comments, Author author) {
+        this.title = title;
+        this.body = body;
+        this.addComments(comments);
+        this.setAuthor(author);
     }
 
     public Post(String title, String body, Author author, Set<Tag> tags) {

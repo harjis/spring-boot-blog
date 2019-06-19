@@ -2,6 +2,7 @@ package com.example.springbootblog.app.controllers;
 
 import com.example.springbootblog.app.entities.Comment;
 import com.example.springbootblog.app.entities.Post;
+import com.example.springbootblog.app.exceptions.EntityNotFound;
 import com.example.springbootblog.app.repositories.PostRepository;
 import com.example.springbootblog.app.services.PostCommentInserter;
 import com.example.springbootblog.app.services.post.PostService;
@@ -39,6 +40,13 @@ public class PostsController {
         } else {
             return postService.findById(id);
         }
+    }
+
+    @PutMapping("/{id}")
+    Post update(@PathVariable Long id, @RequestParam String title) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new EntityNotFound(id));
+        post.setTitle(title);
+        return postRepository.save(post);
     }
 
     @GetMapping("/{id}/comments")

@@ -3,6 +3,7 @@ package com.example.springbootblog.app.entities;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -16,6 +17,7 @@ public class Post {
     @GeneratedValue
     private Long id;
 
+    @Length(max = 10)
     private String title;
 
     private String body;
